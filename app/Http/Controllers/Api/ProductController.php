@@ -6,10 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductSearchRequest;
 use App\Models\Product;
-use Dotenv\Validator;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Validator as ValidationValidator;
+
 
 class ProductController extends Controller
 {
@@ -19,7 +17,7 @@ class ProductController extends Controller
         $this->product = $product;
     }
 
-    private $totalPage = 15;
+    private $totalPage = 10;
 
     public function index()
     {
@@ -27,6 +25,7 @@ class ProductController extends Controller
         return response()->json(['data' => $product]);
 
         // no front enviar como parametro page para alterar página ex: page/2
+        //http://127.0.0.1:8000/api/products?page=2
     }
 
     public function store(ProductRequest $request)

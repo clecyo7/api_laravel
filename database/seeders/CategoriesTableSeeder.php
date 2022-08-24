@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 
-class ProductTableSeeder extends Seeder
+class CategoriesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,8 @@ class ProductTableSeeder extends Seeder
      */
     public function run()
     {
-        Product::factory(20)->create();
+        Category::create([
+            'name' => 'PHP',
+        ]);
     }
 }

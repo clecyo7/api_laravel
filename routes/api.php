@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,12 +22,10 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('login', [AuthController::class, 'login']);
-
-
-
-
 Route::middleware('auth:api')->group(function () {
     Route::resource('user', UserController::class);
-    Route::resource('products', ProductController::class);
-    Route::post('products/search', [ProductController::class, 'search']);
+   
 });
+Route::resource('products', ProductController::class);
+Route::post('products/search', [ProductController::class, 'search']);
+Route::apiResource('categories', CategoryController::class);
