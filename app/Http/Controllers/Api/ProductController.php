@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductSearchRequest;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 
@@ -19,13 +20,15 @@ class ProductController extends Controller
 
     private $totalPage = 10;
 
-    public function index()
+    public function index(Request $request)
     {
-        $product = Product::paginate($this->totalPage);
+        //$product = Product::paginate($this->totalPage); -> consulta simples 
+        $product =  $this->product->search($request->all(), $this->totalPage);
         return response()->json(['data' => $product]);
 
-        // no front enviar como parametro page para alterar página ex: page/2
+        // ex: 
         //http://127.0.0.1:8000/api/products?page=2
+        //http://127.0.0.1:8000/api/products?filter=aliquam
     }
 
     public function store(ProductRequest $request)
@@ -108,13 +111,14 @@ class ProductController extends Controller
     }
 
 
-    public function search(ProductSearchRequest $request){
+    public function search(ProductSearchRequest $request)
+    {
 
         $data = $request->all();
         $validate = validator($data, $this->product->rulesSearch());
-        if($validate->fails()){
+        if ($validate->fails()) {
             $messages = $validate->messages();
-           return response()->json(['validate.erro', $messages], 422);
+            return response()->json(['validate.erro', $messages], 422);
         }
 
         $product = $this->product->search($data);
