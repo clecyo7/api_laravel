@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
@@ -24,9 +25,16 @@ class ProductRequest extends FormRequest
      */
     public function rules()
     {
+        $product = $this->route()->parameter('name');
+
         return [
-            'name' => 'required|min:3|max:100',
-            'description' => 'required|min:3|max:100',
+            'name' => "required|
+                       min:3|
+                       max:20|", 
+                       Rule::unique('products')->ignore($product),
+            'description' => 'max:1000',
+            'image' => 'image',
+            'category_id' => 'required|exists:categories,id'
         ];
     }
 
@@ -41,6 +49,8 @@ class ProductRequest extends FormRequest
             'description.min:3'  => 'O campo Descrição precisa ter no mínimo 3 caracteres',
             'description.max:100'  => 'O campo Descrição pode ter no máximo 100 caracteres',
             'description.required'  => 'O campo Descrição é obrigatório',
+            'category_id.required' => 'O campo Categoria é obrigatório',
+            'category_id.exists' => 'O campo Categoria não existe',
         ];
     }
 }
